@@ -1,0 +1,77 @@
+[tool.poetry]
+name = "output_exporting"
+version = "0.1.0"
+description = "Exports document in specific defined format."
+authors = []
+
+[tool.poetry.dependencies]
+python = "~3.11"
+dependency-injector = ">=4.41.0,<5.0.0"
+pydantic = "^2"
+pydantic-settings = "^2.4"
+click = "^8.1.3"
+psycopg2-binary = "^2.9.5"
+uvicorn = "^0.18.3"
+fastapi = "^0.120"
+openpyxl = "^3.1.1"
+msal = "<2.0.0"
+python-dateutil = "^2.8.1"
+types-python-dateutil = "^2.8"
+SQLAlchemy = "^2"
+more-itertools = "^10.7.0"
+
+deps-message-flow = { path = "../vendors/deps-message-flow/src", extras = ["deps-asb", "deps-kafka", "deps-rabbitmq", "deps-integrations"], develop = true }
+deps-observability-instrumentation = { path = "../vendors/deps-observability-instrumentation", develop = true }
+httpx = "^0.27.2"
+
+[tool.poetry.group.dev.dependencies]
+mypy = "^1"
+bandit = "^1.7.5"
+flake8 = ">=3.7,<5"
+wemake-python-styleguide = "^0.17.0"
+isort = "^5.12.0"
+black = "^23.7.0"
+pytest = "^7.4.1"
+coverage = "^5.5"
+factory-boy = "^3.2.0"
+pytest-factoryboy = "^2.1.0"
+pytest-mock = "^3.6.0"
+pytest-unordered = "^0.4.1"
+requests-mock = "~1.9.3"
+types-requests = "^2.25.6"
+
+wdb = "^3.3.0"
+ipdb = "^0.13.9"
+see = "^1.4.1"
+
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.extras]
+datasource = ["datasource"]
+
+[tool.isort]
+profile = "black"
+
+[tool.black]
+line-length = 120
+target-version = ['py39']
+exclude = '''
+(
+    .venv
+    | vendors
+)
+'''
+
+[tool.pytest.ini_options]
+markers = [
+    "plugin_attachment_saga",
+    "profile_creation_saga",
+    "profile_deletion_saga",
+    "build_output",
+    "output_creation",
+    "build_output_nosave",
+]
+

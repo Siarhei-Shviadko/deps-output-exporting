@@ -1,0 +1,16 @@
+version: "3.4"
+
+services:
+  api:
+    image: "output-exporting-dev"
+    container_name: "deps-output-exporting"
+    command: python -m deps_output_exporting serve
+
+  consumer:
+    image: "output-exporting-dev"
+    container_name: "deps-output-exporting-consumer"
+    command: python -m deps_output_exporting dispatch
+
+  migrator:
+    image: "output-exporting-migrator"
+    container_name: deps-output-exporting-migrator

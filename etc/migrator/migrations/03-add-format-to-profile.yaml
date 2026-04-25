@@ -1,0 +1,18 @@
+databaseChangeLog:
+- changeSet:
+    id: 1
+    author: Rimma Avakimova
+    changes:
+    - addColumn:
+        tableName: profile
+        columns:
+        - column:
+            name: format
+            type: VARCHAR
+            defaultValue: excel
+            constraints:
+              nullable: false
+    rollback:
+      - dropColumn:
+          tableName: profile
+          columnName: format

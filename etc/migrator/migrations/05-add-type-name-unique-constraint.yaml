@@ -1,0 +1,23 @@
+databaseChangeLog:
+- changeSet:
+    id: 1
+    author: Rimma Avakimova
+    changes:
+    - sql:
+        comment: delete repeated profile names of document type
+        sql: WITH repeated as (SELECT document_type_id, name FROM profile GROUP BY document_type_id, name HAVING count(name) > 1) DELETE FROM profile WHERE (document_type_id, name) IN (SELECT * FROM repeated);
+    rollback:
+      - empty: {}
+
+- changeSet:
+    id: 2
+    author: Rimma Avakimova
+    changes:
+    - addUniqueConstraint:
+        columnNames: document_type_id, name
+        constraintName: document_type_id_name_key
+        tableName: profile
+    rollback:
+      - dropUniqueConstraint:
+          tableName: profile
+          constraintName: document_type_id_name_key

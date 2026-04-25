@@ -1,0 +1,103 @@
+databaseChangeLog:
+- changeSet:
+    id: 1
+    author: Rimma Avakimova
+    changes:
+      - dropTable:
+          tableName: test
+    rollback:
+      - createTable:
+          columns:
+            - column:
+                constraints:
+                  primaryKey: true
+                  primaryKeyName: test_pkey
+                name: pk
+                type: VARCHAR(50)
+            - column:
+                name: name
+                type: VARCHAR(100)
+          tableName: test
+
+- changeSet:
+      id: 2
+      author: Rimma Avakimova
+      changes:
+        - createTable:
+            tableName: document_type
+            columns:
+            - column:
+                name: id
+                type: VARCHAR(100)
+                constraints:
+                  primaryKey: true
+                  primaryKeyName: document_type_id__tenant_id__pkey
+                  unique: True
+            - column:
+                name: tenant_id
+                type: VARCHAR(100)
+                constraints:
+                  primaryKey: true
+                  primaryKeyName: document_type_id__tenant_id__pkey
+      rollback:
+        - dropTable:
+            tableName: document_type
+
+- changeSet:
+      id: 3
+      author: Rimma Avakimova
+      changes:
+        - createTable:
+            tableName: profile
+            columns:
+            - column:
+                name: id
+                type: VARCHAR(100)
+                constraints:
+                  primaryKey: true
+                  primaryKeyName: profile_id_pkey
+            - column:
+                name: document_type_id
+                type: VARCHAR(100)
+                constraints:
+                  nullable: false
+            - column:
+                name: name
+                type: VARCHAR(100)
+                constraints:
+                  nullable: false
+            - column:
+                name: creation_date
+                type: DATE
+                constraints:
+                  nullable: false
+            - column:
+                name: schema
+                type: JSONB
+                constraints:
+                  nullable: false
+            - column:
+                name: version
+                type: VARCHAR(100)
+                constraints:
+                  nullable: false
+      rollback:
+        - dropTable:
+            tableName: profile
+
+- changeSet:
+    id: 4
+    author: Rimma Avakimova
+    changes:
+      - addForeignKeyConstraint:
+          baseColumnNames: document_type_id
+          baseTableName: profile
+          constraintName: profile_document_type_id_fkey
+          onDelete: CASCADE
+          onUpdate: CASCADE
+          referencedColumnNames: id
+          referencedTableName: document_type
+    rollback:
+      - dropForeignKeyConstraint:
+          baseTableName: profile
+          constraintName: profile_document_type_id_fkey

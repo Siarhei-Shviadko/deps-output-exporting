@@ -1,0 +1,47 @@
+databaseChangeLog:
+- changeSet:
+      id: 1
+      author: Rimma Avakimova
+      changes:
+        - createTable:
+            tableName: output
+            columns:
+            - column:
+                name: id
+                type: VARCHAR(100)
+                constraints:
+                  primaryKey: true
+                  primaryKeyName: output_id_pkey
+            - column:
+                name: tenant_id
+                type: VARCHAR(100)
+                constraints:
+                  nullable: false
+            - column:
+                name: profile_info
+                type: JSONB
+                constraints:
+                  nullable: false
+            - column:
+                name: document_id
+                type: VARCHAR(100)
+                constraints:
+                  nullable: false
+            - column:
+                name: state
+                type: VARCHAR(100)
+                constraints:
+                  nullable: false
+            - column:
+                name: file_path
+                type: VARCHAR(100)
+                constraints:
+                  nullable: false
+            - column:
+                name: creation_date
+                type: DATE
+                constraints:
+                  nullable: false
+      rollback:
+        - dropTable:
+            tableName: output

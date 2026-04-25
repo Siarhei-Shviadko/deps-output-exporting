@@ -1,0 +1,72 @@
+databaseChangeLog:
+- changeSet:
+    id: 1
+    author: Anton Navarka
+    changes:
+      - dropNotNullConstraint:
+          tableName: profile
+          columnName: schema
+          columnDataType: JSONB
+    rollback:
+      - addNotNullConstraint:
+          tableName: profile
+          columnName: schema
+          columnDataType: JSONB
+
+- changeSet:
+    id: 2
+    author: Anton Navarka
+    changes:
+      - dropForeignKeyConstraint:
+          baseTableName: profile
+          constraintName: profile_document_type_id_fkey
+
+      - dropPrimaryKey:
+          tableName: document_type
+          constraintName: document_type_id__tenant_id__pkey
+
+      - addPrimaryKey:
+          tableName: document_type
+          columnNames: id
+          constraintName: document_type_pkey
+
+      - addUniqueConstraint:
+          tableName: document_type
+          columnNames: id, tenant_id
+          constraintName: document_type_id_tenant_id_unique
+
+      - addForeignKeyConstraint:
+          baseColumnNames: document_type_id
+          baseTableName: profile
+          constraintName: profile_document_type_id_fkey
+          onDelete: CASCADE
+          onUpdate: CASCADE
+          referencedColumnNames: id
+          referencedTableName: document_type
+
+    rollback:
+      - dropForeignKeyConstraint:
+          baseTableName: profile
+          constraintName: profile_document_type_id_fkey
+
+      - dropUniqueConstraint:
+          tableName: document_type
+          constraintName: document_type_id_tenant_id_unique
+
+      - dropPrimaryKey:
+          tableName: document_type
+          constraintName: document_type_pkey
+
+      - addPrimaryKey:
+          tableName: document_type
+          columnNames: id, tenant_id
+          constraintName: document_type_id__tenant_id__pkey
+
+      - addForeignKeyConstraint:
+          baseColumnNames: document_type_id
+          baseTableName: profile
+          constraintName: profile_document_type_id_fkey
+          onDelete: CASCADE
+          onUpdate: CASCADE
+          referencedColumnNames: id
+          referencedTableName: document_type

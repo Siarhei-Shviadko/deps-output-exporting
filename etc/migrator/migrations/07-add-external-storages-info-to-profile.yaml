@@ -1,0 +1,17 @@
+databaseChangeLog:
+- changeSet:
+    id: 1
+    author: Alina Izvozchikova
+    changes:
+    - addColumn:
+        tableName: profile
+        columns:
+        - column:
+            name: external_storages_info
+            type: JSONB
+            constraints:
+              nullable: true
+    rollback:
+      - dropColumn:
+          tableName: profile
+          columnName: external_storages_info

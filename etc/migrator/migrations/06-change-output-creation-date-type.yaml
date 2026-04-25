@@ -1,0 +1,14 @@
+databaseChangeLog:
+- changeSet:
+    id: 1
+    author: Rimma Avakimova
+    changes:
+    - modifyDataType:
+        columnName: creation_date
+        tableName: output
+        newDataType: TIMESTAMP WITH TIMEZONE
+    rollback:
+    - modifyDataType:
+        columnName: creation_date
+        tableName: output
+        newDataType: DATE

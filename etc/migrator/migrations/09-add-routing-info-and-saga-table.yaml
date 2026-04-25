@@ -1,0 +1,99 @@
+databaseChangeLog:
+- changeSet:
+    id: 1
+    author: Alina Izvozchikova
+    changes:
+    - createTable:
+        tableName: routing_info
+        columns:
+        - column:
+            name: tenant_id
+            type: VARCHAR(100)
+            constraints:
+              primaryKey: true
+              primaryKeyName: tenant_id__document_type_id__profile_id__pk
+        - column:
+            name: document_type_id
+            type: VARCHAR(100)
+            constraints:
+              primaryKey: true
+              primaryKeyName: tenant_id__document_type_id__profile_id__pk
+              foreignKeyName: document_type_id_fkey
+              references: document_type(id)
+              deleteCascade: true
+        - column:
+            name: profile_id
+            type: VARCHAR(100)
+            constraints:
+              primaryKey: true
+              primaryKeyName: tenant_id__document_type_id__profile_id__pk
+              foreignKeyName: profile_id_fkey
+              references: profile(id)
+              deleteCascade: true
+        - column:
+            name: command_channel
+            type: VARCHAR(150)
+            constraints:
+              nullable: false
+
+    rollback:
+    - dropTable:
+        tableName: routing_info
+
+
+- changeSet:
+    id: 2
+    author: Alina Izvozchikova
+    changes:
+    - createTable:
+        tableName: saga
+        columns:
+        - column:
+            name: saga_id
+            type: VARCHAR
+            constraints:
+              primaryKey: true
+        - column:
+            name: saga_type
+            type: VARCHAR
+            constraints:
+              nullable: false
+        - column:
+            name: state_name
+            type: VARCHAR
+            constraints:
+              nullable: false
+        - column:
+            name: last_request_id
+            type: VARCHAR
+            constraints:
+              nullable: false
+        - column:
+            name: saga_data_type
+            type: VARCHAR
+            constraints:
+              nullable: false
+        - column:
+            name: saga_data_json
+            type: JSONB
+            constraints:
+              nullable: false
+        - column:
+            name: end_state
+            type: BOOL
+            constraints:
+              nullable: false
+        - column:
+            name: compensating
+            type: BOOL
+            constraints:
+              nullable: false
+        - column:
+            name: failed
+            type: BOOL
+            constraints:
+              nullable: false
+
+    rollback:
+    - dropTable:
+        tableName: saga

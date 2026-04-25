@@ -1,0 +1,16 @@
+databaseChangeLog:
+- changeSet:
+    id: 1
+    author: Anton Navarka
+    changes:
+      - modifyDataType:
+          tableName: output
+          columnName: file_path
+          newDataType: VARCHAR(100)
+      - dropNotNullConstraint:
+          tableName: output
+          columnName: file_path
+    rollback:
+      - addNotNullConstraint:
+          tableName: output
+          columnName: file_path

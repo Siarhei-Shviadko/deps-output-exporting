@@ -1,0 +1,37 @@
+databaseChangeLog:
+- changeSet:
+    id: 1
+    author: Anas Kaarov
+    changes:
+    - addColumn:
+        tableName: profile
+        columns:
+        - column:
+            name: exporting_type
+            type: VARCHAR
+            constraints:
+              nullable: true
+    rollback:
+      - dropColumn:
+          tableName: profile
+          columnName: exporting_type
+
+- changeSet:
+    id: 2
+    author: Anas Kaarov
+    changes:
+      - sql:
+          comment: Fill existing NULLs in exporting_type with 'builtin'
+          sql: UPDATE profile SET exporting_type = 'builtin' WHERE exporting_type IS NULL;
+
+- changeSet:
+    id: 3
+    author: Anas Kaarov
+    changes:
+    - addNotNullConstraint:
+        columnName: exporting_type
+        tableName: profile
+    rollback:
+      - dropColumn:
+          tableName: profile
+          columnName: exporting_type

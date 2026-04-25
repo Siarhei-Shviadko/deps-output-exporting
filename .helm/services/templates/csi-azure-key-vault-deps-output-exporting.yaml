@@ -1,0 +1,82 @@
+{{- if .Values.vault_settings.azure_key_vault }}
+apiVersion: secrets-store.csi.x-k8s.io/v1
+kind: SecretProviderClass
+metadata:
+  name: {{ .Values.csi.csi_default_name }}
+spec:
+  provider: azure
+  secretObjects:
+  - data:
+    - key: app-secret-key
+      objectName: app-secret-key
+    - key: keycloak-certs-endpoint
+      objectName: keycloak-certs-endpoint
+    - key: message-broker-driver
+      objectName: message-broker-driver
+    - key: message-broker-connection-string
+      objectName: message-broker-connection-string
+    - key: db-host
+      objectName: db-host
+    - key: output-exporting-db
+      objectName: output-exporting-db
+    - key: output-exporting-db-user
+      objectName: output-exporting-db-user
+    - key: output-exporting-db-password
+      objectName: output-exporting-db-password
+    - key: output-exporting-crypt-credentials-key
+      objectName: output-exporting-crypt-credentials-key
+    - key: new-validation-process
+      objectName: new-validation-process
+    secretName: {{ .Values.secrets.deps_output_exporting.secretName }}
+    type: Opaque
+  parameters:
+    keyvaultName: {{ .Values.azure_kv_settings.keyvaultName }}
+    tenantId: {{ .Values.azure_kv_settings.tenantId }} 
+    vaultKubernetesMountPath: {{ .Values.csi.vaultKubernetesMountPath }}
+    usePodIdentity: "false"
+    useVMManagedIdentity: "true"
+    userAssignedIdentityID: {{ .Values.azure_kv_settings.userAssignedIdentityID }}  
+    resourceGroup:  {{ .Values.azure_kv_settings.resourceGroup }}
+    subscriptionId: {{ .Values.azure_kv_settings.subscriptionId }} 
+    objects: |
+      array:
+        - |
+          objectName: "new-validation-process"
+          objectType: secret
+
+        - |
+          objectName: "app-secret-key"
+          objectType: secret
+        
+        - |
+          objectName: "keycloak-certs-endpoint"
+          objectType: secret
+        
+        - |
+          objectName: "message-broker-driver"
+          objectType: secret
+        
+        - |
+          objectName: "message-broker-connection-string"
+          objectType: secret
+        
+        - |
+          objectName: "db-host"
+          objectType: secret
+        
+        - |
+          objectName: "output-exporting-db"
+          objectType: secret
+      
+        - |
+          objectName: "output-exporting-db-user"
+          objectType: secret
+      
+        - |
+          objectName: "output-exporting-db-password"
+          objectType: secret
+      
+        - |
+          objectName: "output-exporting-crypt-credentials-key"
+          objectType: secret
+{{- end }}
